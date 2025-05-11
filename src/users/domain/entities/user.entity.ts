@@ -1,60 +1,58 @@
-import { Entity } from "@/shared/domain/entities/entity"
-import { UserValidatorFactory } from "../validators/user.validator"
+import { Entity } from '@/shared/domain/entities/entity';
+import { UserValidatorFactory } from '../validators/user.validator';
 
 export type UserProps = {
-	name: string
-	email: string
-	password: string
-	createdAt?: Date
-}
+	name: string;
+	email: string;
+	password: string;
+	createdAt?: Date;
+};
 
 export class UserEntity extends Entity<UserProps> {
-	constructor(public readonly props: UserProps, id?: string) {
-		UserEntity.validate(props)
-		super(props, id)
-		this.props.createdAt = this.props.createdAt ?? new Date()
-	}
-
-	update(value: string): void {
-		UserEntity.validate({...this.props, name: value})
-		this.name = value
-	}
-
-	updatePassword(value: string): void {
-		UserEntity.validate({...this.props, password: value})
-		this.password = value
+	constructor(props: UserProps, id?: string) {
+		UserEntity.validate(props);
+		props.createdAt = props.createdAt ?? new Date();
+		super(props, id);
 	}
 
 	get name() {
-		return this.props.name
-	}
-
-	private set name(value: string) {
-		this.props.name = value
+		return this.props.name;
 	}
 
 	get email() {
-		return this.props.email
-	}
-
-	private set email(value: string) {
-		this.props.email = value
+		return this.props.email;
 	}
 
 	get password() {
-		return this.props.password
-	}
-
-	private set password(value: string) {
-		this.props.password = value
+		return this.props.password;
 	}
 
 	get createdAt() {
-		return this.props.createdAt
+		return this.props.createdAt;
 	}
 
-	static validate(props: UserProps): boolean {
-		const validator = UserValidatorFactory.create()
-		return validator.validate(props)
+	update(name: string): UserEntity {
+		const newProps = { ...this.props, name };
+		UserEntity.validate(newProps);
+		return new UserEntity(newProps, this._id);
+	}
+
+	updatePassword(password: string): UserEntity {
+		const newProps = { ...this.props, password };
+		UserEntity.validate(newProps);
+		return new UserEntity(newProps, this._id);
+	}
+
+	static validate(props: UserProps) {
+		const validator = UserValidatorFactory.create();
+		const isValid = validator.validate(props);
+		if (!isValid && validator.errors) {
+			const errors = Object.values(validator.errors).flat();
+			throw new Error('Validation failed: ' + errors.join(', '));
+		}
+	}
+
+	static create(props: UserProps, id?: string): UserEntity {
+		return new UserEntity(props, id);
 	}
 }

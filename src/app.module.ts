@@ -3,9 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EnvConfigModule } from './shared/infrastructure/env-config/env-config.module';
 import { UsersModule } from './users/infrastructure/users.module';
+import { EventsModule } from './events/events.module';
+import { ContractsModule } from './contracts/contracts.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
-  imports: [EnvConfigModule, UsersModule],
+  imports: [EnvConfigModule, UsersModule, EventsModule, ContractsModule, PaymentsModule],
   controllers: [AppController],
   providers: [AppService],
 })

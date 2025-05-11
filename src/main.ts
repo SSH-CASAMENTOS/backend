@@ -19,11 +19,12 @@ async function bootstrap() {
 		prefix: '/public/',
 	});
 
+	// Configuração do Swagger
 	const config = new DocumentBuilder()
-		.setTitle('Backend API')
-		.setDescription('Documentação da API')
+		.setTitle('API de Casamentos')
+		.setDescription('API para gerenciamento de eventos de casamento')
 		.setVersion('1.0')
-		.addTag('users')
+		.addTag('Eventos', 'Gerenciamento de eventos do casamento')
 		.build();
 
 	const document = SwaggerModule.createDocument(app, config);
