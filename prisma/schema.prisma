@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  fullName  String
+  email     String   @unique
+  password  String
+  company   String?
+  weddingsClient1 Wedding[] @relation("Client1Weddings")
+  weddingsClient2 Wedding[] @relation("Client2Weddings")
+}
+
+model Wedding {
+  id          String    @id @default(uuid())
+  title       String
+  date        DateTime
+  location    String
+  status      String
+  budget      Float
+  totalPaid   Float
+  client1     User      @relation("Client1Weddings", fields: [client1Id], references: [id])
+  client1Id   String
+  client2     User?     @relation("Client2Weddings", fields: [client2Id], references: [id])
+  client2Id   String?
+  budgets     Budget[]
+  contracts   Contract[]
+  events      Event[]
+  payments    Payment[]
+}
+
+model Budget {
+  id            String         @id @default(uuid())
+  wedding       Wedding        @relation(fields: [weddingId], references: [id])
+  weddingId     String
+  totalAmount   Float
+  category      BudgetCategory @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  items         BudgetItem[]
+}
+
+model BudgetCategory {
+  id     String   @id @default(uuid())
+  name   String
+  budgets Budget[]
+}
+
+model BudgetItem {
+  id        String  @id @default(uuid())
+  name      String
+  amount    Float
+  supplier  String?
+  notes     String?
+  budget    Budget  @relation(fields: [budgetId], references: [id])
+  budgetId  String
+}
+
+model Contract {
+  id          String   @id @default(uuid())
+  wedding     Wedding  @relation(fields: [weddingId], references: [id])
+  weddingId   String
+  title       String
+  value       Float
+  status      String
+  supplier    String
+  signedAt    DateTime?
+  expiresAt   DateTime?
+  documentUrl String?
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  wedding     Wedding  @relation(fields: [weddingId], references: [id])
+  weddingId   String
+  title       String
+  start       DateTime
+  end         DateTime
+  type        String
+  location    String
+  description String?
+  attendees   String?
+}
+
+model Payment {
+  id          String   @id @default(uuid())
+  wedding     Wedding  @relation(fields: [weddingId], references: [id])
+  weddingId   String
+  title       String
+  amount      Float
+  dueDate     DateTime
+  paidAt      DateTime?
+  status      String
+  recipient   String
+  category    String
+  method      String
+  notes       String?
+}
