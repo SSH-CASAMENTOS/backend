@@ -8,6 +8,10 @@ export class AuthController {
 
 	@Post('sign-in')
 	async signIn({ email, password }: SignInDto): Promise<any> {
-		return this.authService.signIn({ email, password });
+		try {
+			return this.authService.signIn({ email, password });
+		} catch (error) {
+			throw error;
+		}
 	}
 }
