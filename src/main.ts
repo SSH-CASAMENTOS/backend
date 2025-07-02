@@ -22,6 +22,11 @@ async function bootstrap() {
 		prefix: '/public/',
 	});
 
+	app.enableCors({
+		origin: process.env.FRONTEND_ORIGIN_URL || 'http://localhost:3000',
+		credentials: true,
+	});
+
 	// Configuração do Swagger
 	const config = new DocumentBuilder()
 		.setTitle('API de Casamentos')
