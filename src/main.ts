@@ -7,12 +7,15 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import fastifyStatic from '@fastify/static';
 import { join } from 'path';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestFastifyApplication>(
 		AppModule,
 		new FastifyAdapter(),
 	);
+
+	app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
 	await app.register(fastifyStatic, {
 		root: join(__dirname, '..', 'public'),
