@@ -13,7 +13,6 @@ export class AuthService {
 
 	async signIn({ email, password }: SignInDto): Promise<{ access_token: string }> {
 		const user = await this.userService.findByEmail(email);
-		console.log('Chegou aqui', user);
 
 		if (!user) {
 			throw new UnauthorizedException('Invalid email or password');
