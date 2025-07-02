@@ -5,25 +5,28 @@ import { UpdateWeddingDto } from './dto/update-wedding.dto';
 
 @Injectable()
 export class WeddingService {
-  constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) {}
 
-  create(createWeddingDto: CreateWeddingDto) {
-    return this.prisma.wedding.create({ data: createWeddingDto });
-  }
+	create(createWeddingDto: CreateWeddingDto) {
+		return this.prisma.wedding.create({ data: createWeddingDto });
+	}
 
-  findAll() {
-    return this.prisma.wedding.findMany();
-  }
+	findAllByProfile(profileId: string) {
+		return this.prisma.wedding.findMany({ where: { profileId } });
+	}
 
-  findOne(id: string) {
-    return this.prisma.wedding.findUnique({ where: { id } });
-  }
+	findOne(id: string) {
+		return this.prisma.wedding.findUnique({ where: { id } });
+	}
 
-  update(id: string, updateWeddingDto: UpdateWeddingDto) {
-    return this.prisma.wedding.update({ where: { id }, data: updateWeddingDto });
-  }
+	update(id: string, updateWeddingDto: UpdateWeddingDto) {
+		return this.prisma.wedding.update({
+			where: { id },
+			data: updateWeddingDto,
+		});
+	}
 
-  remove(id: string) {
-    return this.prisma.wedding.delete({ where: { id } });
-  }
+	remove(id: string) {
+		return this.prisma.wedding.delete({ where: { id } });
+	}
 }
