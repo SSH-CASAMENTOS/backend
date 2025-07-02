@@ -12,9 +12,9 @@ export class WeddingController {
     return this.weddingsService.create(createWeddingDto);
   }
 
-  @Get()
-  findAll() {
-    return this.weddingsService.findAll();
+  @Get('profile/:id')
+  findAllByProfile(@Param('id') profileId: string) {
+    return this.weddingsService.findAllByProfile(profileId);
   }
 
   @Get(':id')
