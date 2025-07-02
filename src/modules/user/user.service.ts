@@ -34,6 +34,13 @@ export class UserService {
 		return this.prisma.user.findUnique({ where: { email } });
 	}
 
+	findUserProfiles(userId: string) {
+		return this.prisma.profile.findMany({
+			where: { userId },
+			orderBy: { createdAt: 'desc' },
+		});
+	}
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     const data: UpdateUserDto = { ...updateUserDto };
 
