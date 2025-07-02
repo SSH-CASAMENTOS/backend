@@ -22,6 +22,11 @@ export class EventController {
     return this.eventsService.findOne(id);
   }
 
+  @Get('wedding/:id')
+  findEventsByWeddingId(@Param('weddingId') weddingId: string) {
+    return this.eventsService.findEventsByWeddingId(weddingId);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
     return this.eventsService.update(id, updateEventDto);

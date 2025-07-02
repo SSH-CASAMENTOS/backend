@@ -19,6 +19,10 @@ export class EventService {
     return this.prisma.event.findUnique({ where: { id } });
   }
 
+	findEventsByWeddingId(weddingId: string) {
+		return this.prisma.event.findMany({ where: { weddingId } });
+	}
+
   update(id: string, updateEventDto: UpdateEventDto) {
     return this.prisma.event.update({ where: { id }, data: updateEventDto });
   }
